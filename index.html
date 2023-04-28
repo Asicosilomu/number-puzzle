@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Number Puzzle</title>
+		<style type="text/css">* { font-family: sans-serif; }</style>
+		<script type="text/javascript">
+			// The Equation has three terms and two symbols. The first two terms are calculated first.
+			var guesses = 5;
+			var equation = [1, "+", 1, "+", 1];
+			var symbols = ["+", "-", "*"];
+			function r() { return Math.floor(Math.random() * 26); };
+			function calcByString(x, y, s)
+			{
+				if (s == "+") return x + y;
+				if (s == "-") return x - y;
+				if (s == "*") return x * y;
+				if (s == "/") return x / y;
+			};
+			equation[0] = r();
+			equation[1] = symbols[Math.floor(Math.random() * symbols.length)];
+			equation[2] = r();
+			equation[3] = symbols[Math.floor(Math.random() * symbols.length)];
+			equation[4] = r();
+			function calcEq() {
+				return calcByString(calcByString(equation[0], equation[2], equation[1]), equation[4], equation[3]);
+			};
+			window.addEventListener("DOMContentLoaded", (e) => {
+var yd = document.body.querySelector("#yd");
+equation[0] = r();
+window.x = equation[0];
+window.y = calcEq();
+yd.innerText = window.y.toString();
+			});
+			window.calc = function() {
+				if (guesses < 1) return;
+				var a = document.body.querySelector("#x").value;
+				var re = document.body.querySelector("#result");
+				equation[0] = Number(a);
+				var r = calcEq();
+			re.innerHTML = "<h1>" + a.toString() + " => " + r.toString() + "</h1>" + re.innerHTML;
+				guesses--;
+				if (r == window.y) { alert("That's correct! The equation was: (" + "x" + equation[1] + equation[2] + ")" + equation[3] + equation[4] + ".\nThe correct value for x was " + window.x + "."); window.location.reload(); }
+				if (guesses < 1) { alert("You lost! The equation was: (" + "x" + equation[1] + equation[2] + ")" + equation[3] + equation[4] + ".\nThe correct value for x was " + window.x + "."); window.location.reload(); }
+				document.body.querySelector("#myg").innerText = "You have " + guesses.toString() + " guesses left.";
+			}
+		</script>
+	</head>
+	<body>
+		<center>
+			<h1>Number Puzzle</h1>
+			<p>The Number Puzzle is simple, yet challenging. Here's the deal: I'll create a random math equation with an unknown term <i>x</i>. I'll keep it secret from you, but allow you to give me any number which should replace <i>x</i>, then I will give you the result of the equation. Your goal: Find the value <i>x</i> for which the equation results in <i>y</i>.<br><p>y = <span id="yd">?</span><br>x &lt;&equals; 25</p><p id="myg">Make your guess.</p>x = <input type="number" min="0" max="25" id="x"><br><br><button onclick="window.calc();">Submit</button><br><div id="result"></div></p>
+		</center>
+	</body>
+</html>
